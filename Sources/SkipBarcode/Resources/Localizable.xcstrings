@@ -1,0 +1,16 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "Cancel" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Abbrechen" } }
+      }
+    },
+    "Torch" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Licht" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

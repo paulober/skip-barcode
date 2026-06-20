@@ -1,0 +1,12 @@
+.DS_Store
+.build/
+.swiftpm/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+DerivedData/
+.gradle/
+Android/.gradle/
+Android/build/
+Android/app/build/
+build/
+Package.resolved
