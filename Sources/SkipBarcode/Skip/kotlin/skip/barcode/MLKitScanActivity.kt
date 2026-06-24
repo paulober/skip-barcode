@@ -65,6 +65,9 @@ class MLKitScanActivity : AppCompatActivity() {
                     ConstraintLayout.LayoutParams.MATCH_PARENT,
                     ConstraintLayout.LayoutParams.MATCH_PARENT
                 )
+                // PERFORMANCE (SurfaceView) renders blank/white on many emulators and some
+                // devices; COMPATIBLE (TextureView) shows the preview reliably everywhere.
+                implementationMode = PreviewView.ImplementationMode.COMPATIBLE
             }
             rootLayout.addView(previewView)
 
@@ -169,12 +172,21 @@ class MLKitScanActivity : AppCompatActivity() {
             .also {
                 it.setAnalyzer(cameraExecutor, BarcodeAnalyzer { barcode -> handleBarcodeDetected(barcode) })
             }
-        val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+        // Prefer the back camera, but fall back to whatever the device/emulator exposes
+        // so binding doesn't silently fail (which left a blank/white preview).
+        val cameraSelector = when {
+            cameraProvider.hasCamera(CameraSelector.DEFAULT_BACK_CAMERA) -> CameraSelector.DEFAULT_BACK_CAMERA
+            cameraProvider.hasCamera(CameraSelector.DEFAULT_FRONT_CAMERA) -> CameraSelector.DEFAULT_FRONT_CAMERA
+            else -> CameraSelector.DEFAULT_BACK_CAMERA
+        }
         try {
             cameraProvider.unbindAll()
             camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalysis)
         } catch (e: Exception) {
+            // Surface the failure instead of leaving a blank preview.
             Log.e(TAG, "Use case binding failed", e)
+            Toast.makeText(this, "Camera bind failed: ${e.message}", Toast.LENGTH_LONG).show()
+            finish()
         }
     }
 
