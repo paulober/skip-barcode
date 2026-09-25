@@ -10,8 +10,8 @@ let package = Package(
         .library(name: "SkipBarcode", targets: ["SkipBarcode"]),
     ],
     dependencies: [
-        .package(url: "https://source.skip.tools/skip.git", from: "1.6.27"),
-        .package(url: "https://source.skip.tools/skip-foundation.git", from: "1.0.0"),
+        .package(url: "https://github.com/skiptools/skip.git", from: "1.6.27"),
+        .package(url: "https://github.com/skiptools/skip-foundation.git", from: "1.0.0"),
     ],
     targets: [
         .target(name: "SkipBarcode", dependencies: [
@@ -27,7 +27,7 @@ let package = Package(
 // When bridged into a native (Skip Fuse) app, pull in SkipFuseUI so the
 // SwiftUI scanner view is available to native consumers.
 if Context.environment["SKIP_BRIDGE"] ?? "0" != "0" {
-    package.dependencies += [.package(url: "https://source.skip.tools/skip-fuse-ui.git", from: "1.0.0")]
+    package.dependencies += [.package(url: "https://github.com/skiptools/skip-fuse-ui.git", from: "1.0.0")]
     package.targets.forEach { target in
         target.dependencies += [.product(name: "SkipFuseUI", package: "skip-fuse-ui")]
     }
